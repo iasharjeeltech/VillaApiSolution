@@ -72,25 +72,33 @@ namespace VillaApi.Controllers
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(VillaDto))]
         public async Task<IActionResult> Create([FromBody] VillaCreateDto createDto)
         {
+            // Step 1: Null check — agar client ne data hi nahi bheja toh galat request
             if (createDto == null)
             {
                 return BadRequest();
             }
-            Villa matchingVilla  = await _dbVilla.GetAsync(v => v.Name.ToLower() == createDto.Name.ToLower());
+            // Step 2: Duplicate check — agar same name ka villa already exist karta hai toh error bhejna
+            Villa matchingVilla = await _dbVilla.GetAsync(v => v.Name.ToLower() == createDto.Name.ToLower());
             if (matchingVilla is not null)
             {
+                // Error message ModelState me add karke bad request bhejna
                 ModelState.AddModelError("message", "Villa Already Existed!");
                 return BadRequest(ModelState);
             }
-            Villa villa = _mapper.Map<Villa>(createDto); //yahan bhi mapping hor rhi hai!
-            await _dbVilla.CreateAsync(villa); //because yahan villadto direct nhi lega becuase
+            // Step 3: Mapping — DTO ko Entity me convert karna, kyunki database me DTO save nahi hota
+            Villa villa = _mapper.Map<Villa>(createDto);
 
-            _response.Result = villa;
-            _response.StatusCode = HttpStatusCode.Created;
-            
+            // Step 4: Database me naya villa save karna
+            await _dbVilla.CreateAsync(villa);
+
+            // Step 5: Custom response prepare karna (jo humne APIResponse class banayi hai usme)
+            _response.Result = villa;                        // Result me naya villa object
+            _response.StatusCode = HttpStatusCode.Created;  // Status code 201 Created set karna
+            // Step 6: Client ko response bhejna + usse batana ki yeh naya villa kis route pe milega
             return CreatedAtRoute("GetVilla", new { id = villa.Id }, _response);
         }
         #endregion
+
 
         #region PutAPi
         [HttpPut("{id:int}")]
@@ -104,7 +112,8 @@ namespace VillaApi.Controllers
            Villa villa = _mapper.Map<Villa>(updateDto);
 
             await _dbVilla.UpdateAsync(villa);
-            _response.Result = villa;
+
+            _response.Result = _mapper.Map<VillaDto>(villa);
             _response.StatusCode = HttpStatusCode.NoContent;
             return _response;
         }
@@ -134,7 +143,7 @@ namespace VillaApi.Controllers
 
         #region PatchApi
         [HttpPatch("{id:int}")]
-        public async Task<IActionResult> PartialUpdate(int id,[FromBody] JsonPatchDocument<VillaUpdateDto> patchDocument)
+        public async Task<ActionResult<APIResponse >> PartialUpdate(int id,[FromBody] JsonPatchDocument<VillaUpdateDto> patchDocument)
         {
             if(id <= 0)
             {
@@ -165,6 +174,10 @@ namespace VillaApi.Controllers
             Villa villa = _mapper.Map<Villa>(updateDto);
 
             await _dbVilla.UpdateAsync(villa);
+
+            _response.StatusCode =HttpStatusCode.NoContent;
+            _response.Result = _mapper.Map<VillaDto>(villa);
+
             return NoContent();
         }
         #endregion
