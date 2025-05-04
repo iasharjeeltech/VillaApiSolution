@@ -3,12 +3,12 @@ using Serilog;
 using VillaApi;
 using VillaApi.Data;
 using VillaApi.Repository;
-using VillaApi.Repository.IRepository.IRepository;
+using VillaApi.Repository.IRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 //use to add logger 
 Log.Logger = new LoggerConfiguration().MinimumLevel.Debug()
-                                                    .WriteTo.File("Log./Mylogger.txt", rollingInterval : RollingInterval.Day)
+                                                    .WriteTo.File("Log./Mylogger.txt", rollingInterval: RollingInterval.Day)
                                                     .CreateLogger();
 builder.Host.UseSerilog();
 
@@ -20,7 +20,10 @@ builder.Services.AddControllers()
 builder.Services.AddAutoMapper(typeof(MappingConfig));//mapping config added here global configuration
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen( opt =>
+{
+    opt.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "api.xml"));
+});
 builder.Services.AddScoped<IVillaRepository, VillaRepository>(); //Dependency injection register here
 
 

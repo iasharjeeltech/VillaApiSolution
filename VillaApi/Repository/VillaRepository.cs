@@ -1,14 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
-using VillaApi.Data;
+﻿using VillaApi.Data;
 using VillaApi.Models;
 using VillaApi.Repository.IRepository;
-using VillaApi.Repository.IRepository.IRepository;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace VillaApi.Repository
 {
-    public class VillaRepository :Repository<Villa>,  IVillaRepository
+    public class VillaRepository : Repository<Villa>, IVillaRepository
     {
         private readonly ApplicationDbContext _db;
         public VillaRepository(ApplicationDbContext db) : base(db) // its work from parent to child so thats why need to add base first give the value to parent then child and if you think who give value to child do its a di

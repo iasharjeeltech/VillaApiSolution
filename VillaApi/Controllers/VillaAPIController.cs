@@ -28,6 +28,10 @@ namespace VillaApi.Controllers
         }
 
         #region GetApi
+        /// <summary>
+        /// To get the list of Villa
+        /// </summary>
+        /// <returns>List Of Vilaa</returns>
         [HttpGet] //swagger get schemas from here
         [ProducesResponseType(StatusCodes.Status200OK,Type =typeof(APIResponse))]
         public async Task<APIResponse> GetVillas()

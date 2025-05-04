@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>VillaApi</name>
+    </assembly>
+    <members>
+        <member name="M:VillaApi.Controllers.VillaAPIController.GetVillas">
+            <summary>
+            To get the list of Villa
+            </summary>
+            <returns>List Of Vilaa</returns>
+        </member>
+        <member name="T:VillaApi.Migrations.InitialCreate">
+            <inheritdoc />
+        </member>
+        <member name="M:VillaApi.Migrations.InitialCreate.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:VillaApi.Migrations.InitialCreate.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:VillaApi.Migrations.InitialCreate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:VillaApi.Migrations.AddNullConstraintsInVilla">
+            <inheritdoc />
+        </member>
+        <member name="M:VillaApi.Migrations.AddNullConstraintsInVilla.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:VillaApi.Migrations.AddNullConstraintsInVilla.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:VillaApi.Migrations.AddNullConstraintsInVilla.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>
