@@ -32,13 +32,22 @@ namespace VillaApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK,Type =typeof(APIResponse))]
         public async Task<APIResponse> GetVillas()
         {
-            _logger.LogInformation("Villas MilGaya");
-            var listOfVilla = await _dbVilla.GetAllAsync();
-            var villaDtoList = _mapper.Map<VillaDto>(listOfVilla); //yeh mapping ho rhi hai dto ko villa me
+            try
+            {
+                _logger.LogInformation("Villas MilGaya");
+                var listOfVilla = await _dbVilla.GetAllAsync();
+                var villaDtoList = _mapper.Map<VillaDto>(listOfVilla); //yeh mapping ho rhi hai dto ko villa me
 
-            _response.Result = villaDtoList;
-            _response.StatusCode = System.Net.HttpStatusCode.OK;
+                _response.Result = villaDtoList;
+                _response.StatusCode = System.Net.HttpStatusCode.OK;
 
+                return _response;
+            }
+            catch (Exception ex)
+            {
+                _response.ErrorMessages.Add(ex.Message);
+                _response.IsSuccess = false;
+            }
             return _response;
         }
 
@@ -48,21 +57,33 @@ namespace VillaApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest,Type =typeof(APIResponse))]
         public async Task<ActionResult<APIResponse>> GetVilla(int id)
         {
-            if (id == 0)
-            {
-                _logger.LogError("error hai id me" + id);
-                return BadRequest();
-            }
-            var villaFromDb = await _dbVilla.GetAllAsync(v => v.Id == id);
-            if (villaFromDb == null)
-            {
-                _logger.LogError("null hai id" + id);
-                return NotFound();
-            }
-            VillaDto villaDto = _mapper.Map<VillaDto>(villaFromDb);
 
-            _response.Result = villaDto;
-            _response.StatusCode=HttpStatusCode.OK;
+            try
+            {
+                if (id == 0)
+                {
+                    _logger.LogError("error hai id me" + id);
+                    return BadRequest();
+                }
+                var villaFromDb = await _dbVilla.GetAllAsync(v => v.Id == id);
+                if (villaFromDb == null)
+                {
+                    _logger.LogError("null hai id" + id);
+                    return NotFound();
+                }
+                VillaDto villaDto = _mapper.Map<VillaDto>(villaFromDb);
+
+                _response.Result = villaDto;
+                _response.StatusCode = HttpStatusCode.OK;
+                return _response;
+            }
+            catch (Exception ex) {
+
+                _response.ErrorMessages.Add(ex.Message);
+                //_response.StatusCode = HttpStatusCode.BadRequest;
+                _response.IsSuccess = false;
+
+            }
             return _response;
         }
         #endregion
@@ -104,17 +125,26 @@ namespace VillaApi.Controllers
         [HttpPut("{id:int}")]
         public async Task<ActionResult<APIResponse>> UpdateVilla(int id, [FromBody] VillaUpdateDto updateDto)
         {
-            if (id == 0 || id != updateDto.Id)
+            try
             {
-                return BadRequest();
+                if (id == 0 || id != updateDto.Id)
+                {
+                    return BadRequest();
+                }
+
+                Villa villa = _mapper.Map<Villa>(updateDto);
+
+                await _dbVilla.UpdateAsync(villa);
+
+                _response.Result = _mapper.Map<VillaDto>(villa);
+                _response.StatusCode = HttpStatusCode.NoContent;
+                return _response;
             }
+            catch (Exception ex) {
 
-           Villa villa = _mapper.Map<Villa>(updateDto);
-
-            await _dbVilla.UpdateAsync(villa);
-
-            _response.Result = _mapper.Map<VillaDto>(villa);
-            _response.StatusCode = HttpStatusCode.NoContent;
+                _response.ErrorMessages.Add(ex.Message);
+                _response.IsSuccess = false;
+            }
             return _response;
         }
         #endregion
@@ -123,20 +153,29 @@ namespace VillaApi.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<APIResponse>> DeleteVilla(int id, [FromBody] VillaDto villaDto)
         {
-            if (id == 0)
+            try
             {
-                return BadRequest();
-            }
-            var villaFromDb = await _dbVilla.GetAsync(v => v.Id == id);
+                if (id == 0)
+                {
+                    return BadRequest();
+                }
+                var villaFromDb = await _dbVilla.GetAsync(v => v.Id == id);
 
-            if (villaFromDb == null)
-            {
-                return BadRequest();
-            }
-            await _dbVilla.RemoveAsync(villaFromDb);
-            _response.Result = villaFromDb;
-            _response.StatusCode = HttpStatusCode.NoContent;
+                if (villaFromDb == null)
+                {
+                    return BadRequest();
+                }
+                await _dbVilla.RemoveAsync(villaFromDb);
+                _response.Result = villaFromDb;
+                _response.StatusCode = HttpStatusCode.NoContent;
 
+                return _response;
+            }
+            catch(Exception ex){
+                _response.ErrorMessages.Add(ex.Message);
+                _response.IsSuccess = false;
+
+            }
             return _response;
         }
         #endregion
@@ -145,40 +184,50 @@ namespace VillaApi.Controllers
         [HttpPatch("{id:int}")]
         public async Task<ActionResult<APIResponse >> PartialUpdate(int id,[FromBody] JsonPatchDocument<VillaUpdateDto> patchDocument)
         {
-            if(id <= 0)
+            try
             {
-                return BadRequest();
-            }
+                if (id <= 0)
+                {
+                    return BadRequest();
+                }
 
-            Villa villaFromDb = await _dbVilla.GetAsync(v => v.Id == id, false);
-            if (villaFromDb == null)
+                Villa villaFromDb = await _dbVilla.GetAsync(v => v.Id == id, false);
+                if (villaFromDb == null)
+                {
+                    return NotFound();
+                }
+
+                VillaUpdateDto updateDto = _mapper.Map<VillaUpdateDto>(villaFromDb);
+
+                //VillaUpdateDto updateDto = new VillaUpdateDto() //yeh manual mapping hai 
+                //{
+                //    Amenity = villaFromDb.Amenity,
+                //    Details = villaFromDb.Details,
+                //    Id = villaFromDb.Id,
+                //    ImageUrl = villaFromDb.ImageUrl,
+                //    Occupancy = villaFromDb.Occupancy,
+                //    Rate = villaFromDb.Rate,
+                //    SqFt= villaFromDb.SqFt
+                //};
+
+                patchDocument.ApplyTo(updateDto, ModelState);
+
+                Villa villa = _mapper.Map<Villa>(updateDto);
+
+                await _dbVilla.UpdateAsync(villa);
+
+                _response.StatusCode = HttpStatusCode.NoContent;
+                _response.Result = _mapper.Map<VillaDto>(villa);
+
+                return NoContent();
+            }
+            catch (Exception ex)
             {
-                return NotFound();
+                _response.ErrorMessages.Add(ex.Message);
+                _response.IsSuccess=false;
             }
-
-            VillaUpdateDto updateDto = _mapper.Map<VillaUpdateDto>(villaFromDb);
-
-            //VillaUpdateDto updateDto = new VillaUpdateDto() //yeh manual mapping hai 
-            //{
-            //    Amenity = villaFromDb.Amenity,
-            //    Details = villaFromDb.Details,
-            //    Id = villaFromDb.Id,
-            //    ImageUrl = villaFromDb.ImageUrl,
-            //    Occupancy = villaFromDb.Occupancy,
-            //    Rate = villaFromDb.Rate,
-            //    SqFt= villaFromDb.SqFt
-            //};
-
-            patchDocument.ApplyTo(updateDto, ModelState);
-
-            Villa villa = _mapper.Map<Villa>(updateDto);
-
-            await _dbVilla.UpdateAsync(villa);
-
-            _response.StatusCode =HttpStatusCode.NoContent;
-            _response.Result = _mapper.Map<VillaDto>(villa);
-
-            return NoContent();
+            return _response;
+            
         }
         #endregion
 
