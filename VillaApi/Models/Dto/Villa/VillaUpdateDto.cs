@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace VillaApi.Models.Dto
+namespace VillaApi.Models.Dto.Villa
 {
     public class VillaUpdateDto
     {
-        [Required] 
+        [Required]
         public int Id { get; set; }
-        [Required,MaxLength(20)]
+        [Required, MaxLength(20)]
         public string Name { get; set; }
         [Required]
         public string Details { get; set; }
