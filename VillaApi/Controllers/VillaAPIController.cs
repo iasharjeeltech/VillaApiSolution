@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using VillaApi.Models;
-using VillaApi.Models.Dto;
+using VillaApi.Models.Dto.Villa;
 using VillaApi.Repository.IRepository;
 
 

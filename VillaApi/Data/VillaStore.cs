@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 using VillaApi.Models;
-using VillaApi.Models.Dto;
+using VillaApi.Models.Dto.Villa;
 
 namespace VillaApi.Data
 {
