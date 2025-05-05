@@ -10,6 +10,7 @@ using VillaApi.Repository.IRepository;
 namespace VillaApi.Controllers
 {
     [ApiController]
+    //[Produces("application?json")]
     [Route("Api/VillaApi")]
     public class VillaAPIController : ControllerBase
     {

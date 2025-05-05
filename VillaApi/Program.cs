@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using VillaApi;
@@ -14,16 +15,23 @@ builder.Host.UseSerilog();
 
 // Add services to the container.
 
-builder.Services.AddControllers()
-                .AddNewtonsoftJson()
-                .AddXmlDataContractSerializerFormatters(); //used to allow xml format for content negotiation
+builder.Services.AddControllers(c =>
+{
+    c.Filters.Add(new ConsumesAttribute("application/xml"));  //request types rahegi
+    c.Filters.Add(new ProducesAttribute("application/json")); //response types rahegi
+}).AddNewtonsoftJson()
+  .AddXmlDataContractSerializerFormatters(); //used to allow xml format for content negotiation
+
 builder.Services.AddAutoMapper(typeof(MappingConfig));//mapping config added here global configuration
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen( opt =>
 {
     opt.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "api.xml"));
 });
+
 builder.Services.AddScoped<IVillaRepository, VillaRepository>(); //Dependency injection register here
 
 
