@@ -17,7 +17,7 @@ builder.Host.UseSerilog();
 
 builder.Services.AddControllers(c =>
 {
-    c.Filters.Add(new ConsumesAttribute("application/xml"));  //request types rahegi
+    c.Filters.Add(new ConsumesAttribute("application/json"));  //request types rahegi
     c.Filters.Add(new ProducesAttribute("application/json")); //response types rahegi
 }).AddNewtonsoftJson()
   .AddXmlDataContractSerializerFormatters(); //used to allow xml format for content negotiation
@@ -32,7 +32,8 @@ builder.Services.AddSwaggerGen( opt =>
     opt.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "api.xml"));
 });
 
-builder.Services.AddScoped<IVillaRepository, VillaRepository>(); //Dependency injection register here
+builder.Services.AddScoped<IVillaRepository, VillaRepository>(); //Dependency injection register here for Villa 
+builder.Services.AddScoped<IVillaNumberRepository, VillaNumberRepository>(); //Dependency injection register here for VillaNumber
 
 
 builder.Services.AddDbContext<ApplicationDbContext>(opt =>

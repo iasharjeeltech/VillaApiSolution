@@ -10,6 +10,12 @@
             </summary>
             <returns>List Of Vilaa</returns>
         </member>
+        <member name="M:VillaApi.Controllers.VillaNumberAPIController.Get">
+            <summary>
+            To get the list of Villa
+            </summary>
+            <returns>List Of Vilaa</returns>
+        </member>
         <member name="T:VillaApi.Migrations.InitialCreate">
             <inheritdoc />
         </member>
@@ -32,6 +38,30 @@
             <inheritdoc />
         </member>
         <member name="M:VillaApi.Migrations.AddNullConstraintsInVilla.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:VillaApi.Migrations.AddVillaNumbersTable">
+            <inheritdoc />
+        </member>
+        <member name="M:VillaApi.Migrations.AddVillaNumbersTable.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:VillaApi.Migrations.AddVillaNumbersTable.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:VillaApi.Migrations.AddVillaNumbersTable.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:VillaApi.Migrations.RenameSpeacialDetailsColumn">
+            <inheritdoc />
+        </member>
+        <member name="M:VillaApi.Migrations.RenameSpeacialDetailsColumn.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:VillaApi.Migrations.RenameSpeacialDetailsColumn.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:VillaApi.Migrations.RenameSpeacialDetailsColumn.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
     </members>
