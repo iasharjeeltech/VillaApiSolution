@@ -16,7 +16,7 @@ namespace VillaApi.Repository
             dbSet = _db.Set<T>(); //initialize here to make _db.Villas Into dbSet
         }
 
-        public async Task CreateAsync(T entity) // the T is a placeholder which work for DataBase Table like for Villa
+        public async Task CreateAsync(T entity) // the T is a placeholder which work for DataBase Table like for Villa, VillaNumber ...
         {
             await dbSet.AddAsync(entity);
             await SaveAsync();
@@ -59,6 +59,5 @@ namespace VillaApi.Repository
         {
             await _db.SaveChangesAsync();
         }
-
     }
 }
