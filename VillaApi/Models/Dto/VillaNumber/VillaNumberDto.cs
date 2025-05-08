@@ -7,5 +7,8 @@ namespace VillaApi.Models.Dto.VillaNumber
     {
         public int VillaNo { get; set; }
         public string SpecialDetails { get; set; }
+
+        [Required]
+        public string VillaId { get; set; }
     }
 }

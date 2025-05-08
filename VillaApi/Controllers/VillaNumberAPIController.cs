@@ -8,6 +8,7 @@ using VillaApi.Models;
 using VillaApi.Repository.IRepository;
 using VillaApi.Models.Dto.VillaNumber;
 using VillaApi.Models.Dto;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace VillaApi.Controllers
 {
@@ -16,15 +17,19 @@ namespace VillaApi.Controllers
     public class VillaNumberAPIController : ControllerBase
     {
         private readonly IVillaNumberRepository _dbVillaNumber;
+        private readonly IVillaRepository _dbVilla;
         private readonly ILogger<VillaNumberAPIController> _logger;
         private readonly IMapper _mapper;
         protected APIResponse _response;
 
         public VillaNumberAPIController(ILogger<VillaNumberAPIController> logger,
-                                  IMapper mapper, IVillaNumberRepository dbVillaNumber)
+                                        IMapper mapper,
+                                        IVillaNumberRepository dbVillaNumber,
+                                        IVillaRepository dbVilla)
         {
             _logger = logger;
             _dbVillaNumber = dbVillaNumber;
+            _dbVilla = dbVilla;
             _mapper = mapper;
             _response = new APIResponse();
         }
@@ -115,6 +120,13 @@ namespace VillaApi.Controllers
                 ModelState.AddModelError("message", "VillaNumber Already Existed!");
                 return BadRequest(ModelState);
             }
+
+            if (await _dbVilla.GetAsync( v=>v.Id == createDto.VillaId) == null)
+            {
+                ModelState.AddModelError("CustomError","Invalid VillaId In CreadtDto Object");
+                return BadRequest(ModelState);
+            }
+
             // Step 3: Mapping — DTO ko Entity me convert karna, kyunki database me DTO save nahi hota
             VillaNumber villaNumber = _mapper.Map<VillaNumber>(createDto);
 
