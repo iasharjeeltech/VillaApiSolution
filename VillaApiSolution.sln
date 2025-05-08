@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VillaApi", "VillaApi\VillaA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VillaAPi.Web", "VillaAPi.Web\VillaAPi.Web.csproj", "{3C6F6945-4DAC-471E-9780-BDCCA0EF60F1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VillaApi.Utility", "VillaApi.Utility\VillaApi.Utility.csproj", "{FA70015C-D25F-4101-A86D-F1AC2361BA34}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{3C6F6945-4DAC-471E-9780-BDCCA0EF60F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C6F6945-4DAC-471E-9780-BDCCA0EF60F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C6F6945-4DAC-471E-9780-BDCCA0EF60F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA70015C-D25F-4101-A86D-F1AC2361BA34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA70015C-D25F-4101-A86D-F1AC2361BA34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA70015C-D25F-4101-A86D-F1AC2361BA34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA70015C-D25F-4101-A86D-F1AC2361BA34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
