@@ -1,0 +1,14 @@
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace VillaApi.Web.Models.Dto.VillaNumber
+{
+    public class VillaNumberDto
+    {
+        public int VillaNo { get; set; }
+        public string SpecialDetails { get; set; }
+
+        [Required]
+        public string VillaId { get; set; }
+    }
+}
