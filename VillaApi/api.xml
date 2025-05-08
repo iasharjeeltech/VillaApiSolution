@@ -64,5 +64,17 @@
         <member name="M:VillaApi.Migrations.RenameSpeacialDetailsColumn.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:VillaApi.Migrations.AddVillaIdFKinVillaNumberTbl">
+            <inheritdoc />
+        </member>
+        <member name="M:VillaApi.Migrations.AddVillaIdFKinVillaNumberTbl.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:VillaApi.Migrations.AddVillaIdFKinVillaNumberTbl.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:VillaApi.Migrations.AddVillaIdFKinVillaNumberTbl.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>
