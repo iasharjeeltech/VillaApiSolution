@@ -19,10 +19,10 @@ namespace VillaAPi.Web.Controllers
 
             //https://localhost:7001/api/villaapi yeh aisa baneyga
 
-            var response = await client.GetAsync(_villaApiUrl + "/api/villaapi");
+            //var response = await client.GetAsync(_villaApiUrl + "/api/villaapi");
 
-            var result = await response.Content.ReadAsStringAsync();
-
+            //var result = await response.Content.ReadAsStringAsync();
+             
             return View();
         }
     }
