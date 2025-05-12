@@ -40,24 +40,33 @@ namespace VillaAPi.Web.Services
                 }
 
                 // API method type set karna (GET, POST, PUT, DELETE, PATCH)
-                switch (apiRequest.ApiType)
+                //switch (apiRequest.ApiType)
+                //{
+                //    case ApiType.POST:
+                //        requestMessage.Method = HttpMethod.Post;
+                //        break;
+                //    case ApiType.PUT:
+                //        requestMessage.Method = HttpMethod.Put;
+                //        break;
+                //    case ApiType.DELETE:
+                //        requestMessage.Method = HttpMethod.Delete;
+                //        break;
+                //    case ApiType.PATCH:
+                //        requestMessage.Method = HttpMethod.Patch;
+                //        break;
+                //    default:
+                //        requestMessage.Method = HttpMethod.Get;
+                //        break;
+                //}
+
+                //above concise code!
+                requestMessage.Method = apiRequest.ApiType switch
                 {
-                    case ApiType.POST:
-                        requestMessage.Method = HttpMethod.Post;
-                        break;
-                    case ApiType.PUT:
-                        requestMessage.Method = HttpMethod.Put;
-                        break;
-                    case ApiType.DELETE:
-                        requestMessage.Method = HttpMethod.Delete;
-                        break;
-                    case ApiType.PATCH:
-                        requestMessage.Method = HttpMethod.Patch;
-                        break;
-                    default:
-                        requestMessage.Method = HttpMethod.Get;
-                        break;
-                }
+                    ApiType.POST => HttpMethod.Post,
+                    ApiType.PUT => HttpMethod.Put,
+                    ApiType.DELETE => HttpMethod.Delete,
+                    _ => HttpMethod.Get
+                };
 
                 // HTTP client create karna (named client "VillaApi" Program.cs me define hoga)
                 var client = _httpClientFactory.CreateClient("VillaApi");
