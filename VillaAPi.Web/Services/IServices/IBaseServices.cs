@@ -5,7 +5,7 @@ namespace VillaAPi.Web.Services.IServices
 {
     public interface IBaseServices
     {
-        Task<T> Send<T>(APIRequest apiRequest);
+        Task<T> SendAsync<T>(APIRequest apiRequest);
         public APIResponse ResponseModel { get; set; }
     }
 }
