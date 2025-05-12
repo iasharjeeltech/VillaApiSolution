@@ -9,6 +9,7 @@ using VillaApi.Repository.IRepository;
 using VillaApi.Models.Dto.VillaNumber;
 using VillaApi.Models.Dto;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace VillaApi.Controllers
 {
@@ -151,6 +152,12 @@ namespace VillaApi.Controllers
                 if (villaNo == 0 || villaNo != updateDto.VillaNo)
                 {
                     return BadRequest();
+                }
+
+                if (await _dbVilla.GetAsync(v => v.Id == updateDto.VillaId) == null)
+                {
+                    ModelState.AddModelError("CustomError", "Invalid VillaId In CreadtDto Object");
+                    return BadRequest(ModelState);
                 }
 
                 VillaNumber villaNumber = _mapper.Map<VillaNumber>(updateDto);
