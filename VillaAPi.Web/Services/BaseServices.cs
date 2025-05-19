@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json; // Newtonsoft ka use JSON serialize/deserialize karne ke liye
+﻿//using Newtonsoft.Json; // Newtonsoft ka use JSON serialize/deserialize karne ke liye
 using System.Text; // Encoding ke liye (UTF8)
 using System.Text.Json; // .NET ka built-in serializer (yahan use nahi hua)
 using VillaApi.Models; // APIResponse model
@@ -39,7 +39,7 @@ namespace VillaAPi.Web.Services
                 if (apiRequest.Data != null)
                 {
                     requestMessage.Content = new StringContent(
-                        content: JsonConvert.SerializeObject(apiRequest.Data), // Object ko JSON string me convert
+                        content: JsonSerializer.Serialize(apiRequest.Data), // Object ko JSON string me convert
                         encoding: Encoding.UTF8, // Content encoding set
                         mediaType: "application/json" // Content-Type set
                     );
@@ -79,7 +79,7 @@ namespace VillaAPi.Web.Services
                 HttpResponseMessage responseMessage = await client.SendAsync(requestMessage);             // Request send karna and response lena
 
                 var result = await responseMessage.Content.ReadAsStringAsync();            // Response body read karna as string
-                var deserializedResult = JsonConvert.DeserializeObject<T>(result); // String ko desired generic type me convert karna (example: List<VillaDTO> etc.)
+                var deserializedResult = JsonSerializer.Deserialize<T>(result); // String ko desired generic type me convert karna (example: List<VillaDTO> etc.)
 
                 return deserializedResult;
             }
@@ -89,8 +89,8 @@ namespace VillaAPi.Web.Services
                 errorResponse.IsSuccess = false;
                 errorResponse.ErrorMessages.Add(ex.Message);
 
-                var serializedDto = JsonConvert.SerializeObject(errorResponse);
-                var deserializedDto = JsonConvert.DeserializeObject<T>(serializedDto);
+                var serializedDto = JsonSerializer.Serialize(errorResponse);
+                var deserializedDto = JsonSerializer.Deserialize<T>(serializedDto);
 
                 return deserializedDto;  
 
