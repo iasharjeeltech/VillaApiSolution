@@ -11,6 +11,7 @@ namespace VillaAPi.Web.Services
     public class BaseServices : IBaseServices
     {
         private readonly IHttpClientFactory _httpClientFactory; // HTTP request bhejne ke liye client factory
+        private IHttpContextFactory httpClientFactory;
 
         public APIResponse ResponseModel { get; set; } // Response store karne ke liye model
 
@@ -18,6 +19,11 @@ namespace VillaAPi.Web.Services
         {
             _httpClientFactory = httpClientFactory; // dependency inject kar rahe hain
             this.ResponseModel = new APIResponse(); // response object initialize
+        }
+
+        public BaseServices(IHttpContextFactory httpClientFactory)
+        {
+            this.httpClientFactory = httpClientFactory;
         }
 
         public async Task<T> SendAsync<T>(APIRequest apiRequest)
