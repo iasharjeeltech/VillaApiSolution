@@ -16,7 +16,7 @@ namespace VillaAPi.Web.Services
             _villaApiUrl = configuration["ServiceUrls:VillaApi"];
         }
 
-        public Task<T> CreateAsync<T>(VillaUpdateDto dto)
+        public Task<T> CreateAsync<T>(VillaCreateDto dto)
         {
             return SendAsync<T>(new APIRequest
             {
@@ -27,12 +27,12 @@ namespace VillaAPi.Web.Services
             });
         }
 
-        public Task DeleteAsync<T>(int Id)
+        public Task DeleteAsync<T>(int id)
         {
             return SendAsync<T>(new APIRequest
             {
                 ApiType = ApiType.DELETE,
-                Url = _villaApiUrl + "/api/villaapi"+Id,
+                Url = _villaApiUrl + "/api/villaapi/"+id,
 
             });
         }
@@ -46,20 +46,20 @@ namespace VillaAPi.Web.Services
             });
         }
 
-        public Task<T> GetAsync<T>(int Id)
+        public Task<T> GetAsync<T>(int id)
         {
             return SendAsync<T>(new APIRequest
             {
                 ApiType = ApiType.GET,
-                Url = _villaApiUrl + "/api/villaapi" + Id,
+                Url = _villaApiUrl + "/api/villaapi/" + id
             });
         }
 
-        public Task<T> UpdateAsync<T>(VillaCreateDto dto)
+        public Task<T> UpdateAsync<T>(VillaUpdateDto dto)
         {
             return SendAsync<T>(new APIRequest
             {
-                ApiType = ApiType.PUT,
+                ApiType = ApiType.POST,
                 Url = _villaApiUrl + "/api/villaapi"+dto.Id,
                 Data = dto
             });

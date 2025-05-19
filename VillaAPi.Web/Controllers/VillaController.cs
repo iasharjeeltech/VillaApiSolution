@@ -22,7 +22,11 @@ namespace VillaAPi.Web.Controllers
         {
             var apiResponse = await _villaService.GetAllAsync<APIResponse>();
 
-            List<VillaDto> villaDtos = JsonSerializer.Deserialize<List<VillaDto>>(Convert.ToString(apiResponse.Result));
+            List<VillaDto> villaDtos = JsonSerializer.Deserialize<List<VillaDto>>(
+                Convert.ToString(apiResponse.Result),new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            })!;
                 
             return View(villaDtos);
         } 
