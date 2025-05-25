@@ -79,7 +79,10 @@ namespace VillaAPi.Web.Services
                 HttpResponseMessage responseMessage = await client.SendAsync(requestMessage);             // Request send karna and response lena
 
                 var result = await responseMessage.Content.ReadAsStringAsync();            // Response body read karna as string
-                var deserializedResult = JsonSerializer.Deserialize<T>(result); // String ko desired generic type me convert karna (example: List<VillaDTO> etc.)
+                var deserializedResult = JsonSerializer.Deserialize<T>(result, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                })!; // String ko desired generic type me convert karna (example: List<VillaDTO> etc.)
 
                 return deserializedResult;
             }
