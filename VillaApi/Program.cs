@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using System.Text;
 using VillaApi;
 using VillaApi.Data;
 using VillaApi.Repository;
@@ -42,6 +45,23 @@ builder.Services.AddDbContext<ApplicationDbContext>(opt =>
     opt.UseSqlServer(connectionString);
 });
 
+builder.Services.AddAuthentication(opt =>
+{
+    opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(opt =>
+{
+    opt.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration.GetValue<string>("Jwt:IssuerAudience"),
+        ValidAudience = builder.Configuration.GetValue<string>("Jwt:Audience"),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("Jwt:Key")!))
+    };
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
