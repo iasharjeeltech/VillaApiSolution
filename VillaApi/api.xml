@@ -76,5 +76,17 @@
         <member name="M:VillaApi.Migrations.AddVillaIdFKinVillaNumberTbl.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:VillaApi.Migrations.AddUsersTable">
+            <inheritdoc />
+        </member>
+        <member name="M:VillaApi.Migrations.AddUsersTable.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:VillaApi.Migrations.AddUsersTable.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:VillaApi.Migrations.AddUsersTable.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>
