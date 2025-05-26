@@ -37,6 +37,8 @@ namespace VillaApi.Controllers
         [HttpGet] //swagger get schemas from here
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK,Type =typeof(APIResponse))]
+        //[ResponseCache(Duration = 30)]  // for single use
+        [ResponseCache(CacheProfileName = "Default_30")]
         public async Task<APIResponse> GetVillas()
         {
             try

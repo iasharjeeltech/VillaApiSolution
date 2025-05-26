@@ -22,6 +22,14 @@ builder.Services.AddControllers(c =>
 {
     c.Filters.Add(new ConsumesAttribute("application/json"));  //request types rahegi
     c.Filters.Add(new ProducesAttribute("application/json")); //response types rahegi
+    
+    c.CacheProfiles.Add("Default_30", new CacheProfile //caching variable created
+    {
+        Duration = 30,
+        Location = ResponseCacheLocation.Client,
+        NoStore = false
+    });
+
 }).AddNewtonsoftJson()
   .AddXmlDataContractSerializerFormatters(); //used to allow xml format for content negotiation
 
@@ -64,6 +72,8 @@ builder.Services.AddAuthentication(opt =>
 });
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+builder.Services.AddResponseCaching();
 
 var app = builder.Build();
 
