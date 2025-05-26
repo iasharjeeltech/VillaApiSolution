@@ -5,6 +5,8 @@ using VillaApi.Repository.IRepository;
 
 namespace VillaApi.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class UserController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
@@ -13,15 +15,17 @@ namespace VillaApi.Controllers
         {
             _userRepository = userRepository;
         }
-
-        public async Task Register(RegisterUserDto registerUserDto)
+        [HttpPost("Register")]
+        public async Task<RegisterReponseDto> Register(RegisterUserDto registerUserDto)
         {
            var responseDto = await _userRepository.RegisterUserAsync(registerUserDto);
+            return responseDto;
         }
-
-        public async Task Login(LoginUserDto loginUserDto)
+        [HttpPost("Login")]
+        public async Task<LoginResponseDto> Login(LoginUserDto loginUserDto)
         {
-            var logiDto = await _userRepository.LoginUserAsync(loginUserDto);
+            var loginDto = await _userRepository.LoginUserAsync(loginUserDto);
+            return loginDto;
         }
     }
 }
