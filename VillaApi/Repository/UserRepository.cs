@@ -1,4 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using VillaApi.Data;
 using VillaApi.Models;
 using VillaApi.Models.Dto.LoginDto;
@@ -10,10 +14,12 @@ namespace VillaApi.Repository
     public class UserRepository : IUserRepository
     {
         private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _configuration;
 
-        public UserRepository(ApplicationDbContext context)
+        public UserRepository(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         public async Task<LoginResponseDto> LoginUserAsync(LoginUserDto loginUserDto)
@@ -22,13 +28,14 @@ namespace VillaApi.Repository
             {
                 return new LoginResponseDto() { IsLoggedIn = false, Message = "User not Found!" };
             } 
-            var userFromDb =  await _context.applicationUsers.FirstOrDefaultAsync(au => au.Email == loginUserDto.Email);
+            ApplicationUser? userFromDb =  await _context.applicationUsers
+                                            .FirstOrDefaultAsync(au => au.Email.ToLower() == loginUserDto.Email.ToLower());
             if (userFromDb is null )
             {
                 return new LoginResponseDto() { IsLoggedIn = false, Message = "Check Your Email! Try Again" };
             }
 
-            if (BCrypt.Net.BCrypt.Verify(loginUserDto.Password, userFromDb.Password))
+            if (!BCrypt.Net.BCrypt.Verify(loginUserDto.Password, userFromDb.Password))
             {
                 return new LoginResponseDto() { IsLoggedIn = false, Message = "incorrect Password!!!" };
             }
@@ -36,13 +43,35 @@ namespace VillaApi.Repository
             {
                 IsLoggedIn = true,
                 Message = "Login Successfully!", 
-                Token = GanerateToken()
+                Token = GenerateToken(userFromDb)
             };
         }
 
-        private string GanerateToken()
+        private string GenerateToken(ApplicationUser user)
         {
+            SymmetricSecurityKey symmetricSecurityKe = new(Encoding.UTF8.GetBytes(_configuration.GetValue<string>("Jwt:Key")!));
 
+            SigningCredentials credentials = new SigningCredentials(symmetricSecurityKe,SecurityAlgorithms.HmacSha256);
+
+            Claim[] claims = 
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Name),
+                new Claim(ClaimTypes.Email, user.Email )
+            };
+
+            JwtSecurityToken jwtSecurityToken = new JwtSecurityToken(
+                claims : claims,
+                signingCredentials : credentials,
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
+                expires : DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["Jwt:EXPIRATION_MINUTE"]))
+                );
+
+            JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+            string jwtToken = handler.WriteToken(jwtSecurityToken);
+
+            return jwtToken;
         }
 
         public async Task<RegisterReponseDto> RegisterUserAsync(RegisterUserDto registerUserDto)
@@ -51,8 +80,8 @@ namespace VillaApi.Repository
             {
                 return new RegisterReponseDto{IsRegistered = false, Message = "RegisterUserDto Is Null!"};
             }
-            var userFormDb = await _context.applicationUsers.FirstOrDefaultAsync(au => au.Email == registerUserDto.Email);
-            if(userFormDb is null)
+            var userFormDb = await _context.applicationUsers.FirstOrDefaultAsync(au => au.Email.ToLower() == registerUserDto.Email.ToLower());
+            if(userFormDb is not null)
             {
                 return new RegisterReponseDto { IsRegistered = false, Message = "User Already Exits!" };
             }
@@ -65,7 +94,8 @@ namespace VillaApi.Repository
             await _context.applicationUsers.AddAsync(user);
             await _context.SaveChangesAsync();
 
-            return new RegisterReponseDto { IsRegistered = true, Message = " User Has Been Registered Successfully!"}
+            return new RegisterReponseDto { IsRegistered = true, Message = " User Has Been Registered Successfully!" };
         }
     }
 }
+;
