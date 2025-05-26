@@ -22,6 +22,31 @@ namespace VillaApi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("VillaApi.Models.ApplicationUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("applicationUsers");
+                });
+
             modelBuilder.Entity("VillaApi.Models.Villa", b =>
                 {
                     b.Property<int>("Id")
@@ -70,7 +95,7 @@ namespace VillaApi.Migrations
                         {
                             Id = 1,
                             Amenity = "",
-                            CreatedDate = new DateTime(2025, 5, 8, 23, 3, 20, 677, DateTimeKind.Local).AddTicks(284),
+                            CreatedDate = new DateTime(2025, 5, 25, 22, 51, 27, 55, DateTimeKind.Local).AddTicks(4537),
                             Details = "",
                             ImageUrl = "",
                             Name = "Qaisar Villa",
@@ -82,7 +107,7 @@ namespace VillaApi.Migrations
                         {
                             Id = 2,
                             Amenity = "",
-                            CreatedDate = new DateTime(2025, 5, 8, 23, 3, 20, 677, DateTimeKind.Local).AddTicks(337),
+                            CreatedDate = new DateTime(2025, 5, 25, 22, 51, 27, 55, DateTimeKind.Local).AddTicks(4563),
                             Details = "",
                             ImageUrl = "",
                             Name = "Badruddin Villa",
@@ -94,7 +119,7 @@ namespace VillaApi.Migrations
                         {
                             Id = 3,
                             Amenity = "",
-                            CreatedDate = new DateTime(2025, 5, 8, 23, 3, 20, 677, DateTimeKind.Local).AddTicks(352),
+                            CreatedDate = new DateTime(2025, 5, 25, 22, 51, 27, 55, DateTimeKind.Local).AddTicks(4566),
                             Details = "",
                             ImageUrl = "",
                             Name = "Ahmed Villa",
