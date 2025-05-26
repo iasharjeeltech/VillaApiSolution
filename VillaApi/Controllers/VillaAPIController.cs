@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -34,6 +35,7 @@ namespace VillaApi.Controllers
         /// </summary>
         /// <returns>List Of Vilaa</returns>
         [HttpGet] //swagger get schemas from here
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK,Type =typeof(APIResponse))]
         public async Task<APIResponse> GetVillas()
         {
