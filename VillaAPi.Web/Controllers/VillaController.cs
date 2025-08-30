@@ -1,29 +1,35 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System.Text.Json;
+
+//using Newtonsoft.Json;
+using VillaApi.Models;
+using VillaApi.Web.Models.Dto.Villa;
+using VillaAPi.Web.Services.IServices;
 
 namespace VillaAPi.Web.Controllers
 {
     public class VillaController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
-        private string _villaApiUrl;
-        public VillaController(IHttpClientFactory httpClientFactory, IConfiguration configuration)
+        private readonly IVillaService _villaService;
+
+        public VillaController(IVillaService villaService)
         {
-            _httpClientFactory = httpClientFactory;
-            this._villaApiUrl = configuration.GetValue<string>("ServiceUrls:VillaApi")!;
+            _villaService = villaService;
         }
 
         public async Task<IActionResult> IndexVilla()
         {
-            var client = _httpClientFactory.CreateClient("VillaApi");
+            var apiResponse = await _villaService.GetAllAsync<APIResponse>();
 
-            //https://localhost:7001/api/villaapi yeh aisa baneyga
-
-            //var response = await client.GetAsync(_villaApiUrl + "/api/villaapi");
-
-            //var result = await response.Content.ReadAsStringAsync();
-             
-            return View();
-        }
+            List<
+                VillaDto> villaDtos = JsonSerializer.Deserialize<List<VillaDto>>(
+                Convert.ToString(apiResponse.Result),new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            })!;
+                
+            return View(villaDtos);
+        } 
     }
 }

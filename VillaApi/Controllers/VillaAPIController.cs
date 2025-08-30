@@ -43,7 +43,7 @@ namespace VillaApi.Controllers
             {
                 _logger.LogInformation("Villas MilGaya");
                 var listOfVilla = await _dbVilla.GetAllAsync();
-                var villaDtoList = _mapper.Map<VillaDto>(listOfVilla); //yeh mapping ho rhi hai dto ko villa me
+                var villaDtoList = _mapper.Map<List<VillaDto>>(listOfVilla); //yeh mapping ho rhi hai dto ko villa me
 
                 _response.Result = villaDtoList;
                 _response.StatusCode = System.Net.HttpStatusCode.OK;

@@ -1,5 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using VillaAPi.Web;
+using VillaAPi.Web.Services;
+using VillaAPi.Web.Services.IServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddAutoMapper(typeof(MappingConfig)); //autoMapper Added
+
+builder.Services.AddScoped<IVillaService, VillaService>();
 
 builder.Services.AddHttpClient();
 var app = builder.Build();
